@@ -117,7 +117,87 @@
     background-color: #f6f6f6;
  }
 
- h1 {text-align: center;}
+ .loading {
+    z-index: 1000;
+    position: fixed;
+    top: 0; left: 0;
+    background-color: #f6f6f6;
+    width: 100%; height: 100%;
+    animation: load 1s ease-in-out 3.4s forwards;
+ }
+
+ h2 {text-align: center; margin-top: 40vh;}
+
+ .circles {
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+ }
+
+ .circle_1, 
+ .circle_2, 
+ .circle_3 {
+    border: 1px solid #000000;
+    width: 30px; height: 30px;
+    background-color: rgb(208, 255, 0);
+    border-radius: 100%;
+    animation: moveCircles 2.1s ease-in-out infinite;
+  }
+
+  .circle_1 {
+    animation-delay: 0.3s;
+  }
+
+  .circle_2 {
+    animation-delay: 0.6s;
+  }
+
+  .circle_3 {
+    animation-delay: 0.9s;
+  }
+
+  @keyframes moveCircles {
+    0% {
+      transform: translateY(0);
+    }
+
+    25% {
+      transform: translateY(-70px);
+    }
+
+    75% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes load {
+    from {
+      transform: rotateY(360deg);
+      opacity: 1;
+    }
+    to {
+      opacity: 0.5;
+      transform: rotateY(270deg); 
+    }
+  }
+
+  h1 {text-align: center;}
+
+  .zagolovok h1 {
+
+    transition: transform 1s ease-in-out;
+    transition-delay: 0.3s;
+    transform: scale(1);
+  }
+  
+  .zagolovok h1:hover {
+    transform: scale(1.3);
+  }
 
  .commenting {
     padding: 40px 60px;
@@ -160,6 +240,7 @@
  .note {
     border: 2px solid #f6f6f6;
     padding: 10px 0;
+    padding-inline: 15px;
     display: flex;
     justify-content: end;
     align-items: center;

@@ -18,36 +18,40 @@ renderNotes();
 
 //Обработчик, который добавляет новую заметку при нажатии на кнопку
 butt.onclick = function() {
-    list.innerHTML = '';
-
     const notes = {
         title: input.value,
     }
 
     if (input.value) {
+        list.innerHTML = '';
         arr.push(notes);
         renderNotes()
     }
 
-    else {return null}
+    else {return }
 
     input.value = '';
 }
 
 list.onclick = function(event) {
-    if(event.target.dataset.type == 'remove') {
+    const {type, id} = event.target.dataset
+    if(type == 'remove') {
         list.innerHTML = '';
-        arr.splice(event.target.dataset.id, 1);
+        arr.splice(id, 1);
         renderNotes();
     }
-    else if (event.target.dataset.type == 'update') {
-        note[event.target.dataset.id].innerHTML = '';
-        note[event.target.dataset.id].insertAdjacentHTML('beforeend', getUpdateNotes(arr[event.target.dataset.id], event.target.dataset.id));
+    else if (type == 'update') {
+        //Сделано для того, чтобы нельзя было открыть 2 окна редактирования
+        list.innerHTML = ''
+        renderNotes();
+
+        note[id].innerHTML = '';
+        note[id].insertAdjacentHTML('beforeend', getUpdateNotes(arr[id], id));
     }
 
-    else if (event.target.dataset.type == 'save') {
+    else if (type == 'save') {
         if (up.value) {
-            arr[event.target.dataset.id].title = up.value;
+            arr[id].title = up.value;
             list.innerHTML = '';
             renderNotes();
         }
