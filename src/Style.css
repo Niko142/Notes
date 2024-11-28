@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('./fonts/Ubuntu-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+ }
+
+ @font-face {
+  font-family: 'Ubuntu';
+  src: url('./fonts/Ubuntu-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+ }
+
 /**
   Нормализация блочной модели
  */
@@ -111,6 +127,8 @@
  }
 
  body {
+    font-family: 'Ubuntu';
+    font-weight: 400;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -123,10 +141,10 @@
     top: 0; left: 0;
     background-color: #f6f6f6;
     width: 100%; height: 100%;
-    animation: load 1s ease-in-out 3.4s forwards;
+    animation: load 1s ease-in-out 2.4s forwards;
  }
 
- h2 {text-align: center; margin-top: 40vh;}
+ h2 {text-align: center; margin-top: 40vh; font-size: 48px;}
 
  .circles {
     margin-top: 10vh;
@@ -204,7 +222,7 @@
     margin: 0 auto;
     background-color: #ffffff;
     border-radius: 10px;
-    width: 100vh;
+    width: 150vh;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
  }
 
@@ -212,7 +230,7 @@
     margin-bottom: 30px;
     background-color: rgb(250, 250, 255);
     color: rgb(0, 162, 255);
-    font-size: 18px; font-weight: bold;
+    font-size: 21px; font-weight: 700;
     border-radius: 6px;
     width: 100%;
     padding: 10px;
@@ -227,7 +245,7 @@
 
  .send {
     margin-bottom: 30px;
-    font-size: 18px; font-weight: 600;
+    font-size: 20px; font-weight: 700;
     padding: 10px 20px;
     border-radius: 4px;
     background-color: rgb(0, 162, 255, 0.4);
@@ -249,13 +267,16 @@
 
  .text {
   flex-grow: 1;
-  font-size: 20px;
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 24px;
   line-height: 1.3;
  }
 
- .update, .delete, .add {
-    font-size: 18px;
-    font-weight: bold;
+ .update, .delete, .add, .cancel {
+    font-family: 'Ubuntu';
+    font-size: 20px;
+    font-weight: 700;
     border-radius: 5px;
     padding: 10px;
     color: #f6f6f6;
@@ -266,16 +287,23 @@
     margin-right: 1rem;
  }
 
+ /* .alert {} */
+
  .update:hover, .update:focus, .update:active {
   background-color:  rgb(43, 179, 54);
  }
 
- .delete {
+ .delete, .cancel {
   background-color: red;
  }
 
  .delete:hover, .delete:focus, .delete:active {
   background-color: rgb(226, 14, 14);
+ }
+
+ .cancel:hover, .cancel:focus, .cancel:active {
+  background-color: red;
+  opacity: 0.7;
  }
 
  .add {
@@ -285,6 +313,7 @@
  .add:hover, .add:focus, .add:active {
   background-color: rgb(196, 199, 35);
  }
+
 
  .updating {
   align-items: center;

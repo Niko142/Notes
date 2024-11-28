@@ -1,20 +1,23 @@
+import './Style.css';
+
 let butt = document.querySelector('.send');
-let comment = document.querySelector('.commenting');
+// let comment = document.querySelector('.commenting');
 let list = document.querySelector('.list');
 const input = document.querySelector('#notes');
 let note = document.getElementsByClassName('note');
-const updateInput = document.querySelector('.up');
 
-//Исходный массив, в который добавляются новые заметки
-let arr = [{title: 'Сделать Колоду'}, {title: 'Купить портфель'},];
+// Последующий вывод
+const parsing = JSON.parse(localStorage.data);
 
 function renderNotes() {
-    for (let i = 0; i < arr.length; i++) {
-        list.insertAdjacentHTML('beforeend', getNote(arr[i], i))
+    for (let i = 0; i < parsing.length; i++) {
+        list.insertAdjacentHTML('beforeend', getNote(parsing[i], i) /*getNote(arr[i], i)*/)
+    }
+    if (parsing.length === 0) {
+        list.innerHTML = `<p style='font-size: 30px; margin: 0'>Заметок нет<p>`;
     }
 }
 
-renderNotes();
 
 //Обработчик, который добавляет новую заметку при нажатии на кнопку
 butt.onclick = function() {
@@ -24,8 +27,9 @@ butt.onclick = function() {
 
     if (input.value) {
         list.innerHTML = '';
-        arr.push(notes);
-        renderNotes()
+        parsing.push(notes);
+        localStorage.setItem('data', JSON.stringify(parsing));
+        renderNotes();
     }
 
     else {return }
@@ -34,27 +38,38 @@ butt.onclick = function() {
 }
 
 list.onclick = function(event) {
-    const {type, id} = event.target.dataset
-    if(type == 'remove') {
+    const {type, id} = event.target.dataset;
+    if(type === 'remove') {
         list.innerHTML = '';
-        arr.splice(id, 1);
+        parsing.splice(id, 1);
         renderNotes();
     }
-    else if (type == 'update') {
-        //Сделано для того, чтобы нельзя было открыть 2 окна редактирования
-        list.innerHTML = ''
+    else if (type === 'update') {
+        list.innerHTML = '' //Сделано для того, чтобы не допустить открытия 2 окон редактирования
         renderNotes();
 
         note[id].innerHTML = '';
-        note[id].insertAdjacentHTML('beforeend', getUpdateNotes(arr[id], id));
+        note[id].insertAdjacentHTML('beforeend', getUpdateNotes(parsing[id], id));
     }
 
-    else if (type == 'save') {
+    else if (type === 'save') {
         if (up.value) {
-            arr[id].title = up.value;
-            list.innerHTML = '';
-            renderNotes();
+            if (up.value.length >= 3 && up.value.length <= 50){
+                parsing[id].title = up.value;
+                list.innerHTML = '';
+                renderNotes();
+            }
+            else {
+
+                up.focus();
+            }
         }
+        
+    }
+
+    else if (type == 'cancel') {
+        list.innerHTML = '';
+        renderNotes();
     }
 }
 
@@ -73,8 +88,11 @@ list.onclick = function(event) {
         <div class='updating' data-id = ${id}>
             <input type='text' id='up' value = '${value.title}' ></input>
             <button class='add' data-id = ${id} data-type = 'save'>Сохранить</button>
+            <button class='cancel' data-id = ${id} data-type = 'cancel'>Отмена</button>
         </div>
         `
     }
+
+
 
 
