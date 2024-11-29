@@ -1,13 +1,15 @@
 {
   "name": "comments",
   "version": "1.0.0",
-  "description": "Пррограмма подразумевает возможность добавлять, удалять и редактировать текущие записи.",
+  "description": "Модуль, предназначенный для хранения, редактирования и/или удаления заметок",
   "main": "Comments.js",
+  "homepage": "https://Niko142.github.io/Notes",
   "scripts": {
     "build": "webpack --mode=production",
     "dev": "webpack --mode=development",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "webpack serve --open --mode development"
+    "serve": "webpack serve --open",
+    "deploy": "gh-pages -d dist",
+    "prod": "webpack serve --open --mode production"
   },
   "keywords": [],
   "author": "",

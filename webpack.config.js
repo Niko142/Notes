@@ -12,10 +12,9 @@ module.exports = {
         assetModuleFilename: '[name][ext]',
     },
     devServer: {
-        static: path.resolve(__dirname, 'dist'),
-        port: 9000,
-        hot: false,
-        liveReload: true,
+        static: './dist',
+        port: 8000,
+        hot: true,
     },
     plugins: [
         new HtmlWebpackPlugin({
