@@ -1,0 +1,380 @@
+@font-face {
+  font-family: 'Ubuntu';
+  src: url(fonts/Ubuntu-Regular.woff2) format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+ }
+
+ @font-face {
+  font-family: 'Ubuntu';
+  src: url(fonts/Ubuntu-Bold.woff2) format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+ }
+
+/**
+  Нормализация блочной модели
+ */
+ *,
+ *::before,
+ *::after {
+   box-sizing: border-box;
+ }
+ 
+ /**
+   Убираем внутренние отступы слева тегам списков,
+   у которых есть атрибут class
+  */
+ :where(ul, ol):where([class]) {
+   padding-left: 0;
+ }
+ 
+ /**
+   Убираем внешние отступы body и двум другим тегам,
+   у которых есть атрибут class
+  */
+ body,
+ :where(blockquote, figure):where([class]) {
+   margin: 0;
+ }
+ 
+ /**
+   Убираем внешние отступы вертикали нужным тегам,
+   у которых есть атрибут class
+  */
+ :where(
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   h6,
+   p,
+   ul,
+   ol,
+   dl
+ ):where([class]) {
+   margin-block: 0;
+ }
+ 
+ :where(dd[class]) {
+   margin-left: 0;
+ }
+ 
+ /**
+   Убираем стандартный маркер маркированному списку,
+   у которого есть атрибут class
+  */
+ :where(ul[class]) {
+   list-style: none;
+ }
+ 
+ /**
+   Упрощаем работу с изображениями
+  */
+ img {
+   display: block;
+   max-width: 100%;
+ }
+ 
+ /**
+   Наследуем свойства шрифт для полей ввода
+  */
+ input,
+ textarea,
+ select,
+ button {
+   font: inherit;
+ }
+ 
+ html {
+  font-size: 16px;
+  height: 100%;
+  scroll-behavior: smooth;
+ }
+
+ @media screen and (width <= 1024px) {
+  html {font-size: 15px;}
+ }
+ @media screen and (width <= 550px) {
+  html {font-size: 14px;}
+ }
+ 
+ body {
+   /**
+     Пригодится в большинстве ситуаций
+     (когда, например, нужно будет "прижать" футер к низу сайта)
+    */
+   min-height: 100%;
+   /**
+     Унифицированный интерлиньяж
+    */
+   line-height: 1.5;
+ }
+ 
+ /**
+   Удаляем все анимации и переходы для людей,
+   которые предпочитают их не использовать
+  */
+ @media (prefers-reduced-motion: reduce) {
+   * {
+     animation-duration: 0.01ms !important;
+     animation-iteration-count: 1 !important;
+     transition-duration: 0.01ms !important;
+     scroll-behavior: auto !important;
+   }
+ }
+
+ body {
+    font-family: 'Ubuntu';
+    font-weight: 400;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background-color: #f6f6f6;
+ }
+
+ .loading {
+    z-index: 1000;
+    position: fixed;
+    top: 0; left: 0;
+    background-color: #f6f6f6;
+    width: 100%; height: 100%;
+    animation: load 1s ease-in-out 2.4s forwards;
+ }
+
+ h2 {text-align: center; margin-top: 40vh; font-size: 3rem;}
+
+ .circles {
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+ }
+
+ .circle_1, 
+ .circle_2, 
+ .circle_3 {
+    border: 1px solid #000000;
+    width: 1.875rem; height: 30px;
+    background-color: rgb(208, 255, 0);
+    border-radius: 100%;
+    animation: moveCircles 2.1s ease-in-out infinite;
+  }
+
+  .circle_1 {
+    animation-delay: 0.3s;
+  }
+
+  .circle_2 {
+    animation-delay: 0.6s;
+  }
+
+  .circle_3 {
+    animation-delay: 0.9s;
+  }
+
+  @keyframes moveCircles {
+    0% {
+      transform: translateY(0);
+    }
+
+    25% {
+      transform: translateY(-70px);
+    }
+
+    75% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes load {
+    from {
+      transform: rotateY(360deg);
+      opacity: 1;
+    }
+    to {
+      opacity: 0.5;
+      transform: rotateY(270deg); 
+    }
+  }
+
+  h1 {text-align: center;}
+
+  .zagolovok h1 {
+
+    transition: transform 1s ease-in-out;
+    transition-delay: 0.3s;
+    transform: scale(1);
+  }
+  
+  .zagolovok h1:hover {
+    transform: scale(1.3);
+  }
+
+ .commenting {
+    padding: 40px 60px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 80vw;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+ }
+
+ input[type="text"] {
+    margin-bottom: 30px;
+    background-color: rgb(250, 250, 255);
+    color: rgb(0, 162, 255);
+    font-size: 1.3125rem; font-weight: 700;
+    border-radius: 6px;
+    width: 100%;
+    padding: 10px;
+ }
+
+ input[type='text']:focus {
+    outline: 0;
+    border: 2px solid rgb(0, 162, 255);
+ }
+
+ button {border: 0;}
+
+ .send {
+    margin-bottom: 30px;
+    font-size: 1.25rem; font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 4px;
+    background-color: rgb(0, 162, 255, 0.4);
+ }
+
+ .send:hover {
+  background-color: rgb(55 159 219 / 40%);
+ }
+
+ .note {
+    border: 2px solid #f6f6f6;
+    padding: 10px 0;
+    padding-inline: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 10px;
+    margin-bottom: 5px;
+ }
+
+ .text {
+  flex-grow: 1;
+  font-family: 'Ubuntu';
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.3;
+ }
+
+ .update, .delete, .add, .cancel {
+    font-family: 'Ubuntu';
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-radius: 5px;
+    padding: 10px;
+    color: #f6f6f6;
+ }
+
+ .update {
+    background-color: rgb(40 195 52);
+    margin-right: 1rem;
+ }
+
+ .alert {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 8px;
+  padding: 15px;
+  max-width: 224px;
+  background-color: red;
+  color: white;
+  font-weight: 700;
+  animation: lifeCycle 3.5s ease-in-out forwards;
+ }
+
+ @keyframes lifeCycle {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+ }
+
+ .update:hover, .update:focus, .update:active {
+  background-color:  rgb(43, 179, 54);
+ }
+
+ .delete, .cancel {
+  background-color: red;
+ }
+
+ .delete:hover, .delete:focus, .delete:active {
+  background-color: rgb(226, 14, 14);
+ }
+
+ .cancel:hover, .cancel:focus, .cancel:active {
+  background-color: red;
+  opacity: 0.7;
+ }
+
+ .add {
+  background-color: rgb(218, 221, 21);
+ }
+
+ .add:hover, .add:focus, .add:active {
+  background-color: rgb(196, 199, 35);
+ }
+
+
+ .updating {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  column-gap: 30px;
+ }
+
+ .updating input { margin-bottom: 0;}
+
+ .cube {
+  position: relative;
+  top: 0; left: 0;
+  width: 100px; height: 100px;
+  animation: circle .6s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes circle {
+  from {
+    transform: translateY(100px);
+    top: 0; left: 0;
+    background-color: blue;
+  }
+  to {
+    top: 0; left: 600px;
+    border-radius: 100%;
+    background-color: palevioletred;
+  }
+}
+
+@media screen and (width <= 768px) {
+  .commenting {
+    padding: 20px 10px;
+    width: 100vw;
+  }
+}
