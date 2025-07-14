@@ -1,125 +1,118 @@
-import './Style.css';
+import "./Style.css";
 
-let butt = document.querySelector('.send');
-let list = document.querySelector('.list');
-const input = document.querySelector('#notes');
-let note = document.getElementsByClassName('note');
+// Надо добавить фильтрацию
+
+let btn = document.querySelector(".btn.btn--add");
+let recordsList = document.querySelector(".notes__list");
+const input = document.querySelector(".notes__input");
+let note = document.getElementsByClassName("notes__item");
 
 // Проверка на наличие ключа
 function checkData() {
-    const checking = localStorage.getItem('data');
-    if (!checking) {
-        localStorage.setItem('data', JSON.stringify([{title: 'Первая заметка'}]))
-    }
-
+  const checking = localStorage.getItem("data");
+  if (!checking) {
+    localStorage.setItem("data", JSON.stringify([{ title: "Первая заметка" }]));
+  }
 }
 
 checkData();
 
-// Последующий вывод
 const parsing = JSON.parse(localStorage.data);
 
-
+// Рендер (обновление) заметок
 function renderNotes() {
-    list.innerHTML = '';
-    localStorage.setItem('data', JSON.stringify(parsing));
-    for (let i = 0; i < parsing.length; i++) {
-        list.insertAdjacentHTML('beforeend', getNote(parsing[i], i))
-    }
-    if (parsing.length === 0) {
-        list.innerHTML = `<p style='font-size: 30px; margin: 0'>Заметок нет<p>`;
-    }
-
+  recordsList.innerHTML = "";
+  localStorage.setItem("data", JSON.stringify(parsing));
+  for (let i = 0; i < parsing.length; i++) {
+    recordsList.insertAdjacentHTML("beforeend", getNote(parsing[i], i));
+  }
+  if (parsing.length === 0) {
+    recordsList.innerHTML = `<p style="font-size: 1.5rem;">Заметки отсутствуют ...<p>`;
+  }
 }
 
 renderNotes();
 
+//Обработчик добавления новой заметки
+btn.onclick = function () {
+  const notes = {
+    title: input.value,
+  };
 
-//Обработчик, который добавляет новую заметку при нажатии на кнопку
-butt.onclick = function() {
-    const notes = {
-        title: input.value,
-    }
+  if (input.value.length >= 5 && input.value.length <= 50) {
+    recordsList.innerHTML = "";
+    parsing.push(notes);
+    renderNotes();
+  } else {
+    input.focus();
+    viewAlert();
+  }
 
-    if (input.value.length >= 5 && input.value.length <= 50) {
-        list.innerHTML = '';
-        parsing.push(notes);
+  input.value = "";
+};
+
+recordsList.onclick = function (event) {
+  const { type, id } = event.target.dataset;
+  if (type === "remove") {
+    recordsList.innerHTML = "";
+    parsing.splice(id, 1);
+    renderNotes();
+  } else if (type === "update") {
+    recordsList.innerHTML = ""; // Предотвращение открытия 2 окон одновременно
+    renderNotes();
+    note[id].innerHTML = "";
+    note[id].insertAdjacentHTML("beforeend", getUpdateNotes(parsing[id], id));
+  } else if (type === "save") {
+    const editInput = document.querySelector(".notes__input.notes__input--edit");
+    
+    if (editInput && editInput.value) {
+      if (editInput.value.length >= 3 && editInput.value.length <= 50) {
+        parsing[id].title = editInput.value;
+        recordsList.innerHTML = "";
         renderNotes();
+      } else {
+        editInput.focus();
+        viewAlert();
+      }
     }
+  } else if (type == "cancel") {
+    recordsList.innerHTML = "";
+    renderNotes();
+  }
+};
 
-    else {input.focus(); viewAlert();}
-
-    input.value = '';
+function getNote(value, id) {
+  return `
+    <li class="notes__item" data-id=${id}>
+      <p class="notes__text">${value.title}</p>
+      <menu class="btn__toolbar">
+        <button class="btn btn--update" data-id=${id} data-type="update">Редактировать</button>
+        <button class="btn btn--delete" data-id=${id} data-type="remove">Удалить</button>
+      </menu>
+    </li>
+  `;
 }
 
-list.onclick = function(event) {
-    const {type, id} = event.target.dataset;
-    if(type === 'remove') {
-        list.innerHTML = '';
-        parsing.splice(id, 1);
-        renderNotes();
-    }
-    else if (type === 'update') {
-        list.innerHTML = '' //Сделано для того, чтобы не допустить открытия 2 окон редактирования
-        renderNotes();
-        note[id].innerHTML = '';
-        note[id].insertAdjacentHTML('beforeend', getUpdateNotes(parsing[id], id));
-    }
-
-    else if (type === 'save') {
-        if (up.value) {
-            if (up.value.length >= 3 && up.value.length <= 50) {
-                parsing[id].title = up.value;
-                list.innerHTML = '';
-                renderNotes();
-            }
-            else {
-                up.focus();
-                viewAlert();
-            }
-        }
-        
-    }
-
-    else if (type == 'cancel') {
-        list.innerHTML = '';
-        renderNotes();
-    }
+function getUpdateNotes(value, id) {
+  return `
+    <input type="text" class="notes__input notes__input--edit" value="${value.title}"></input>
+    <menu class='btn__toolbar'>
+      <button class="btn btn--save" data-id=${id} data-type="save">Сохранить</button>
+      <button class="btn btn--cancel" data-id=${id} data-type="cancel">Отмена</button>
+    </menu>
+  `;
 }
 
-    function getNote(value, id) {
-        return `
-        <div class='note' data-id = ${id}>
-            <p class='text'>${value.title}</p>
-            <button class='update' data-id = ${id} data-type = 'update'>Редактировать</button>
-            <button class='delete' data-id = ${id} data-type = 'remove'>Удалить</button>
-        </div>
-        `
-    }
+function viewAlert() {
+  const alertBlock = document.createElement("div");
+  alertBlock.className = "alert";
 
-    function getUpdateNotes(value, id) {
-        return `
-        <div class='updating' data-id = ${id}>
-            <input type='text' id='up' value = '${value.title}' ></input>
-            <button class='add' data-id = ${id} data-type = 'save'>Сохранить</button>
-            <button class='cancel' data-id = ${id} data-type = 'cancel'>Отмена</button>
-        </div>
-        `
-    }
+  const text = document.createElement("span");
+  text.style.cssText = "";
+  text.textContent = "Ошибка, недопустимый размер строки";
 
-    function viewAlert() {
-        const alertBlock = document.createElement('div');
-        alertBlock.className = 'alert';
-        
-        const text = document.createElement('span');
-        text.style.cssText = ``;
-        text.textContent = 'Ошибка, недопустимый размер строки'
+  alertBlock.appendChild(text);
+  document.body.append(alertBlock);
 
-        alertBlock.appendChild(text);
-        document.body.append(alertBlock);
-
-        setTimeout(()=> alertBlock.remove(), 3500)
-    }
-
-
-
+  setTimeout(() => alertBlock.remove(), 3500);
+}

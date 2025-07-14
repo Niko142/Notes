@@ -1,27 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script defer src="bundle.js"></script>
-    <title>Заметки</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="" />
+  <title>ToDo-лист</title>
 </head>
+
 <body>
-    <div class="loading">
-       <h2>Loading...</h2>
-       <div class="circles">
-            <div class="circle_1"></div>
-            <div class="circle_2"></div>
-            <div class="circle_3"></div>
-       </div>
+  <div class="loader" aria-label="Загрузка главного меню">
+    <div class="loader__content">
+      <span class="loader__title" aria-hidden="true">Загрузка</span>
+      <div class="loader__points">
+        <div class="loader__point loader__point--first"></div>
+        <div class="loader__point loader__point--second"></div>
+        <div class="loader__point loader__point--third"></div>
+      </div>
     </div>
-    <div class="commenting">
-        <div class="zagolovok"><h1>Заметки на текущий период</h1></div>
-        <input type="text" id="notes" placeholder="Введи заметку (размером от 5 до 50 символов)"/>
-        <button class="send">Ввести</button>
+  </div>
 
-        <div class="list"></div>
+  <!-- Основной и главный блок программы -->
+  <main class="notes">
+    <h1 class="notes__header">Текущие заметки</h1>
+    <input type="text" class="notes__input" placeholder="Напиши любую заметку" />
+    <button type="button" class="btn btn--add">Добавить</button>
 
-    </div>
+    <!-- Список записей -->
+    <ul class="notes__list"></ul>
+  </main>
 </body>
+
 </html>

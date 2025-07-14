@@ -1,310 +1,289 @@
+:root {
+  --white: #f6f6f6;
+  --white-hover: #f3f3f3;
+  --black: #001514;
+  --green: #007a04;
+  --green-hover: #005a03;
+  --blue: #1b5299;
+  --blue-hover: #163f75;
+  --red: #d11e17;
+  --red-hover: #b01914;
+  --yellow: #fffd82;
+  --gray: #6e6e6e;
+  --light-blue: #2361f1;
+  --light-blue-hover: #1f55d3;
+}
+
 @font-face {
-  font-family: 'Ubuntu';
-  src: url('./fonts/Ubuntu-Regular.woff2') format('woff2');
+  font-family: "Ubuntu";
+  src: url("./fonts/Ubuntu-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
- }
+}
 
- @font-face {
-  font-family: 'Ubuntu';
-  src: url('./fonts/Ubuntu-Bold.woff2') format('woff2');
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./fonts/Ubuntu-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
- }
+}
 
-/**
-  Нормализация блочной модели
- */
- *,
- *::before,
- *::after {
-   box-sizing: border-box;
- }
- 
- /**
-   Убираем внутренние отступы слева тегам списков,
-   у которых есть атрибут class
-  */
- :where(ul, ol):where([class]) {
-   padding-left: 0;
- }
- 
- /**
-   Убираем внешние отступы body и двум другим тегам,
-   у которых есть атрибут class
-  */
- body,
- :where(blockquote, figure):where([class]) {
-   margin: 0;
- }
- 
- /**
-   Убираем внешние отступы вертикали нужным тегам,
-   у которых есть атрибут class
-  */
- :where(
-   h1,
-   h2,
-   h3,
-   h4,
-   h5,
-   h6,
-   p,
-   ul,
-   ol,
-   dl
- ):where([class]) {
-   margin-block: 0;
- }
- 
- :where(dd[class]) {
-   margin-left: 0;
- }
- 
- /**
-   Убираем стандартный маркер маркированному списку,
-   у которого есть атрибут class
-  */
- :where(ul[class]) {
-   list-style: none;
- }
- 
- /**
-   Упрощаем работу с изображениями
-  */
- img {
-   display: block;
-   max-width: 100%;
- }
- 
- /**
-   Наследуем свойства шрифт для полей ввода
-  */
- input,
- textarea,
- select,
- button {
-   font: inherit;
- }
- 
- html {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:where(ul, ol):where([class]) {
+  padding-left: 0;
+}
+
+:where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl):where([class]) {
+  margin-block: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Наследование шрифтов */
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+html {
   font-size: 16px;
   height: 100%;
   scroll-behavior: smooth;
- }
+}
 
- @media screen and (width <= 1024px) {
-  html {font-size: 15px;}
- }
- @media screen and (width <= 550px) {
-  html {font-size: 14px;}
- }
- 
- body {
-   /**
-     Пригодится в большинстве ситуаций
-     (когда, например, нужно будет "прижать" футер к низу сайта)
-    */
-   min-height: 100%;
-   /**
-     Унифицированный интерлиньяж
-    */
-   line-height: 1.5;
- }
- 
- /**
-   Удаляем все анимации и переходы для людей,
-   которые предпочитают их не использовать
-  */
- @media (prefers-reduced-motion: reduce) {
-   * {
-     animation-duration: 0.01ms !important;
-     animation-iteration-count: 1 !important;
-     transition-duration: 0.01ms !important;
-     scroll-behavior: auto !important;
-   }
- }
+body {
+  font-family: "Ubuntu";
+  font-weight: 400;
+  height: 100vh;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  background-color: var(--white);
+}
 
- body {
-    font-family: 'Ubuntu';
-    font-weight: 400;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    background-color: #f6f6f6;
- }
+.loader {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  z-index: auto;
+  background-color: var(--white);
+  animation: load 1s ease-in-out 2.4s forwards;
+}
 
- .loading {
-    z-index: 1000;
-    position: fixed;
-    top: 0; left: 0;
-    background-color: #f6f6f6;
-    width: 100%; height: 100%;
-    animation: load 1s ease-in-out 2.4s forwards;
- }
+.loader__content {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: 50px;
+}
 
- h2 {text-align: center; margin-top: 40vh; font-size: 3rem;}
+.loader__title {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--black);
+}
 
- .circles {
-    margin-top: 10vh;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
- }
+.loader__points {
+  display: flex;
+  column-gap: 30px;
+  flex-wrap: nowrap;
+}
 
- .circle_1, 
- .circle_2, 
- .circle_3 {
-    border: 1px solid #000000;
-    width: 1.875rem; height: 30px;
-    background-color: rgb(208, 255, 0);
-    border-radius: 100%;
-    animation: moveCircles 2.1s ease-in-out infinite;
-  }
+.loader__point {
+  width: 25px;
+  height: 25px;
+  border: 1px solid var(--black);
+  background-color: var(--blue);
+  border-radius: 50%;
+  animation: moveCircles 2.1s ease-in-out infinite;
 
-  .circle_1 {
+  &.loader__point--first {
     animation-delay: 0.3s;
   }
-
-  .circle_2 {
+  &.loader__point--second {
     animation-delay: 0.6s;
   }
-
-  .circle_3 {
+  &.loader__point--third {
     animation-delay: 0.9s;
   }
+}
 
-  @keyframes moveCircles {
-    0% {
-      transform: translateY(0);
-    }
-
-    25% {
-      transform: translateY(-70px);
-    }
-
-    75% {
-      transform: translateY(0);
-    }
-
-    100% {
-      transform: translateY(0);
-    }
+/* Анимация движения точек (кружков загрузки) */
+@keyframes moveCircles {
+  0% {
+    transform: translateY(0);
   }
-
-  @keyframes load {
-    from {
-      transform: rotateY(360deg);
-      opacity: 1;
-    }
-    to {
-      opacity: 0.5;
-      transform: rotateY(270deg); 
-    }
+  25% {
+    transform: translateY(-70px);
   }
-
-  h1 {text-align: center;}
-
-  .zagolovok h1 {
-
-    transition: transform 1s ease-in-out;
-    transition-delay: 0.3s;
-    transform: scale(1);
+  75% {
+    transform: translateY(0);
   }
-  
-  .zagolovok h1:hover {
-    transform: scale(1.3);
+  100% {
+    transform: translateY(0);
   }
+}
 
- .commenting {
-    padding: 40px 60px;
-    margin: 0 auto;
-    background-color: #ffffff;
-    border-radius: 10px;
-    width: 80vw;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
- }
+/* Закрытие лоадера */
+@keyframes load {
+  from {
+    transform: rotateY(360deg);
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+    transform: rotateY(270deg);
+  }
+}
 
- #notes, #up {
-    margin-bottom: 30px;
-    background-color: rgb(250, 250, 255);
-    color: rgb(0, 162, 255);
-    font-size: 1.3125rem; font-weight: 700;
-    border-radius: 6px;
-    width: 100%;
-    padding: 10px;
- }
+.notes {
+  padding: 60px;
+  background-color: white;
+  border-radius: 10px;
+  width: 80vw;
+  max-height: min-content;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
 
- #up {margin-bottom: 0;}
+.notes .notes__header {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
- #notes:focus, #up:focus {
-    outline: 0;
-    border: 2px solid rgb(0, 162, 255);
- }
-
- button {border: 0;}
-
- .send {
-    margin-bottom: 30px;
-    font-size: 1.25rem; font-weight: 700;
-    padding: 10px 20px;
-    border-radius: 4px;
-    background-color: rgb(0, 162, 255, 0.4);
- }
-
- .send:hover {
-  background-color: rgb(55 159 219 / 40%);
- }
-
- .note {
-    border: 2px solid #f6f6f6;
-    padding: 10px 0;
-    padding-inline: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    row-gap: 10px;
-    margin-bottom: 5px;
- }
-
- .text {
-  flex-grow: 1;
-  font-family: 'Ubuntu';
+.notes__input {
+  width: 100%;
+  font-size: 1.3125rem;
   font-weight: 400;
+  color: var(--black);
+  background-color: white;
+  border-radius: 6px;
+  margin-bottom: 30px;
+  padding: 10px;
+
+  &:focus {
+    outline: 0;
+    border: 2px solid var(--blue);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  }
+  &.notes__input--edit {
+    margin-bottom: 0;
+  }
+}
+
+.notes__list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.notes__item {
+  box-sizing: border-box;
+  border: 2px solid var(--gray);
+  padding: 10px 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.notes__text {
+  flex-grow: 1;
   font-size: 1.5rem;
-  line-height: 1.3;
- }
+  line-height: 1.25;
+}
 
- .update, .delete, .add, .cancel {
-    font-family: 'Ubuntu';
-    font-size: 1.25rem;
-    font-weight: 700;
-    border-radius: 5px;
-    padding: 10px;
-    color: #f6f6f6;
- }
+button[class^="btn"] {
+  border: 0;
+  box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 4px;
+}
 
- .update {
-    background-color: rgb(40 195 52);
-    margin-right: 1rem;
- }
+.btn:where(.btn--add, .btn--update, .btn--delete, .btn--save, .btn--cancel) {
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 5px;
+  padding: 10px;
+  color: var(--white);
+}
 
- .alert {
+.btn__toolbar {
+  display: flex;
+  column-gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn--add {
+  margin-bottom: 30px;
+  padding: 10px 25px;
+  background-color: var(--blue);
+  &:hover {
+    background-color: var(--blue-hover);
+  }
+}
+.btn--update {
+  background-color: var(--green);
+  &:where(:hover, :focus-visible, :active) {
+    background-color: var(--green-hover);
+  }
+}
+.btn--delete {
+  background-color: var(--red);
+  &:where(:hover, :focus-visible, :active) {
+    background-color: var(--red-hover);
+  }
+}
+.btn--cancel {
+  background-color: transparent;
+  border: 2px solid var(--gray) !important;
+  color: var(--gray);
+  &:where(:hover, :focus-visible, :active) {
+    background-color: var(--white-hover);
+  }
+}
+.btn--save {
+  background-color: var(--light-blue);
+  &:where(:hover, :focus-visible, :active) {
+    background-color: var(--light-blue-hover);
+  }
+}
+
+/* Нуждается в доработке */
+.alert {
   position: absolute;
-  top: 0;
-  right: 0;
+  inset: 0;
   border-radius: 8px;
-  padding: 15px;
+  padding: 20px;
   max-width: 224px;
-  background-color: red;
-  color: white;
+  max-height: min-content;
+  background-color: var(--red);
+  color: var(--white);
   font-weight: 700;
   animation: lifeCycle 3.5s ease-in-out forwards;
- }
+}
 
- @keyframes lifeCycle {
+/* Анимация появления и исчезновения alert */
+@keyframes lifeCycle {
   0% {
     opacity: 0;
   }
@@ -317,66 +296,26 @@
   100% {
     opacity: 0;
   }
- }
-
- .update:hover, .update:focus, .update:active {
-  background-color:  rgb(43, 179, 54);
- }
-
- .delete, .cancel {
-  background-color: red;
- }
-
- .delete:hover, .delete:focus, .delete:active {
-  background-color: rgb(226, 14, 14);
- }
-
- .cancel:hover, .cancel:focus, .cancel:active {
-  background-color: red;
-  opacity: 0.7;
- }
-
- .add {
-  background-color: rgb(218, 221, 21);
- }
-
- .add:hover, .add:focus, .add:active {
-  background-color: rgb(196, 199, 35);
- }
-
-
- .updating {
-  align-items: center;
-  display: flex;
-  flex-grow: 1;
-  column-gap: 30px;
- }
-
- .updating input { margin-bottom: 0;}
-
- .cube {
-  position: relative;
-  top: 0; left: 0;
-  width: 100px; height: 100px;
-  animation: circle .6s ease-in-out infinite alternate-reverse;
 }
 
-@keyframes circle {
-  from {
-    transform: translateY(100px);
-    top: 0; left: 0;
-    background-color: blue;
-  }
-  to {
-    top: 0; left: 600px;
-    border-radius: 100%;
-    background-color: palevioletred;
+/*
+ * Медиазапросы (добавить + поправить)
+*/
+@media screen and (width <= 1024px) {
+  html {
+    font-size: 15px;
   }
 }
 
 @media screen and (width <= 768px) {
-  .commenting {
+  .notes {
     padding: 20px 10px;
-    width: 100vw;
+    width: 90vw;
+  }
+}
+
+@media screen and (width <= 550px) {
+  html {
+    font-size: 14px;
   }
 }
