@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -21,6 +22,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "Notes",
       template: "./src/Comments.html",
+      favicon: "./public/favicon.png",
       filename: "index.html",
       inject: "body",
     }),
@@ -30,6 +32,9 @@ module.exports = {
     new ESLintPlugin({
       extensions: ["js"],
       exclude: ["node_modules/**", "dist/**", "**/*.config.js"],
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: "public", to: "." }],
     }),
   ],
   module: {
