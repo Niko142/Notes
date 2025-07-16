@@ -1,10 +1,9 @@
 import "./Style.css";
 
-// Добавить фильтрацию
-
 let btn = document.querySelector(".btn.btn--add");
 let recordsList = document.querySelector(".notes__list");
-const input = document.querySelector(".notes__input");
+const addInput = document.querySelector("#add-note");
+const searchInput = document.querySelector("#search-note");
 let currentRecords = document.getElementsByClassName("notes__item");
 
 // "Проверяем, есть ли заметки и само хранилище. Если нет — инициализируем новое"
@@ -49,50 +48,81 @@ const getEditRecord = (note, id) => {
   `;
 };
 
-// Формирование и рендер списка заметок на основе полученных данных
-const updateNotes = () => {
-  recordsList.innerHTML = "";
-  const data = getData();
-  if (data.length === 0) {
-    recordsList.innerHTML = `<p style="font-size: 1.5rem;">Заметки на текущий момент отсутствуют ...<p>`;
+// Логика, отвечающая за фильтрацию (на основе сравнения) 
+function filterNotes(data, searchQuery) {
+  if (!searchQuery.trim()) {
+    return data;
   }
-  data.map((record, ind) => {
-    recordsList.insertAdjacentHTML("beforeend", getRecord(record, ind));
-  });
-};
+
+  const searchText = searchQuery.toLowerCase();
+  return data.filter((record) =>
+    record.text.toLowerCase().includes(searchText)
+  );
+}
+
+// Формирование и рендер списка заметок на основе полученных данных
+function updateNotes(filteredData = null) {
+  recordsList.innerHTML = "";
+  const data = filteredData || getData();
+  const searchQuery = searchInput.value.trim();
+
+  const showData = searchQuery ? filterNotes(getData(), searchQuery) : data;
+
+  if (showData.length === 0) {
+    const message = searchQuery
+      ? `Заметки по запросу "${searchQuery}" не найдены...`
+      : "Заметки отсутствуют ...";
+    recordsList.innerHTML = `<p style="font-size: 1.5rem;">${message}</p>`;
+  }
+
+  const allData = getData(); // Данные о всех имеющихся записях
+
+  const recordsToHTML = showData
+    .map((note) => {
+      const realIndex = allData.findIndex(
+        (currentItem) => currentItem.text === note.text
+      );
+      return getRecord(note, realIndex);
+    })
+    .join("");
+  recordsList.insertAdjacentHTML("beforeend", recordsToHTML);
+}
 
 // Создание всплывающего алерта при возникновении ошибок
 const showErrorAlert = (message = "Ошибка: недопустимый размер записи") => {
   const alertBlock = document.createElement("div");
   alertBlock.className = "alert";
 
-  const text = document.createElement("span");
+  const text = document.createElement("p");
   text.textContent = message;
 
   alertBlock.appendChild(text);
   document.body.append(alertBlock);
 
+  // Подумать насчет того, что timeout то не удаляется
   setTimeout(() => alertBlock.remove(), 3500);
 };
 
 // Добавление новой заметки
 function addNote() {
   const data = getData();
+  const textValue = addInput.value.trim();
 
   // Данные в необходимом формате, которые будут добавляться
   const formData = {
-    text: input.value.trim(),
+    text: textValue,
   };
 
-  if (input.value.length >= 5 && input.value.length <= 50) {
+  if (textValue.length >= 5 && textValue.length <= 50) {
     data.push(formData);
     saveData(data);
+    searchInput.value = "";
     updateNotes();
   } else {
-    input.focus();
+    addInput.focus();
     showErrorAlert();
   }
-  input.value = "";
+  addInput.value = "";
 }
 
 // Удаление заметки
@@ -102,7 +132,7 @@ function deleteNote(data, id) {
   updateNotes();
 }
 
-// Отменить действие
+// Отмена действия (при редактировании)
 function cancelAction() {
   updateNotes();
 }
@@ -120,11 +150,12 @@ function startEditNote(data, id) {
 // Редактирование текста в текущей заметке
 function saveEditNote(data, id) {
   const editInput = document.querySelector(".notes__input.notes__input--edit"); // ref на input для редактирования сообщения
-
-  if (editInput && editInput.value) {
-    if (editInput.value.length >= 3 && editInput.value.length <= 50) {
-      data[id].text = editInput.value.trim();
+  if (editInput?.value) {
+    const editInputValue = editInput.value.trim();
+    if (editInputValue.length >= 3 && editInputValue.length <= 50) {
+      data[id].text = editInputValue;
       saveData(data);
+      searchInput.value = "";
       updateNotes();
     } else {
       editInput.focus();
@@ -133,11 +164,18 @@ function saveEditNote(data, id) {
   }
 }
 
+// Очистка input для поиска
+function clearSearchInput() {
+  searchInput.value = "";
+  updateNotes();
+}
+
 // Ядро программы
 const App = () => {
   initData();
   updateNotes();
 
+  // Обработчик для добавления новой заметки по клику кнопки
   btn.addEventListener("click", addNote);
 
   // Текущий набор обработчиков
@@ -154,11 +192,43 @@ const App = () => {
     cancel: cancelAction,
   };
 
+  // Обработчик для кнопок, закрепленных за каждой заметкой
   recordsList.addEventListener("click", (e) => {
     const { type, id } = e.target.dataset;
     const handler = eventHandlers[type];
-    if (handler) {
-      handler(id);
+    handler && handler(id);
+  });
+
+  // Обработчик для добавления заметки при нажатии "Enter"
+  addInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      addNote();
+    }
+  });
+
+  // Обработчик поиска записей
+  let searchTimeout = null;
+  searchInput.addEventListener("input", () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(updateNotes, 300);
+  });
+
+  // Обработчик удаления картинки лупы при фокусе
+  searchInput.addEventListener("focus", () => {
+    searchInput.style.backgroundImage = "url('')";
+  });
+
+  // Обработчик возврата картинки лупы
+  searchInput.addEventListener("blur", () => {
+    if (searchInput.value.length === 0) {
+      searchInput.style.backgroundImage = "url('loupe.png')";
+    }
+  });
+
+  // Обработчик для очистки поля поиска (изменить на подобие кнопки)
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      clearSearchInput();
     }
   });
 };

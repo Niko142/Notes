@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <!-- Первоначальный загрузчик -->
   <div class="loader" aria-label="Загрузка главного меню">
     <div class="loader__content">
       <span class="loader__title" aria-hidden="true">Загрузка</span>
@@ -23,7 +24,10 @@
   <!-- Основной и главный блок программы -->
   <main class="notes">
     <h1 class="notes__header">Текущие заметки</h1>
-    <input type="text" class="notes__input" placeholder="Напиши любую заметку" />
+    <div class="input__toolbar">
+      <input type="text" class="notes__input" id="add-note" placeholder="Напиши любую заметку" />
+      <input type="text" class="notes__input" id="search-note" placeholder="" />
+    </div>
     <button type="button" class="btn btn--add">Добавить</button>
 
     <!-- Список записей -->

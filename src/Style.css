@@ -172,6 +172,12 @@ body {
   margin-bottom: 20px;
 }
 
+.input__toolbar {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: 3fr 1.5fr;
+}
+
 .notes__input {
   width: 100%;
   font-size: 1.3125rem;
@@ -189,6 +195,11 @@ body {
   }
   &.notes__input--edit {
     margin-bottom: 0;
+  }
+  &#search-note {
+    background-image: url("../public/loupe.png");
+    background-position: 10px 50%;
+    background-repeat: no-repeat;
   }
 }
 
@@ -268,17 +279,29 @@ button[class^="btn"] {
   }
 }
 
-/* Нуждается в доработке */
 .alert {
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  padding: 20px;
-  max-width: 224px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16 20px;
+  min-width: 200px;
+  max-width: 320px;
+  min-height: 100px;
   max-height: min-content;
-  background-color: var(--red);
+  align-content: center;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
+  border: 10px solid inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(209, 36, 36, 1) 0%,
+    rgba(204, 137, 22, 1) 65%
+  );
   color: var(--white);
+  font-size: 1.1rem;
   font-weight: 700;
+  z-index: 1000;
   animation: lifeCycle 3.5s ease-in-out forwards;
 }
 
