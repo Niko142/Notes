@@ -3,10 +3,11 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { type } = require("os");
 
 module.exports = {
   mode: "development",
-  entry: "./src/Comments.js",
+  entry: "./src/App.js",
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
@@ -21,7 +22,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "Notes",
-      template: "./src/Comments.html",
+      template: "./src/index.html",
       favicon: "./public/favicon.png",
       filename: "index.html",
       inject: "body",
@@ -48,6 +49,13 @@ module.exports = {
         type: "asset/resource",
         generator: {
           filename: "fonts/[name][ext]",
+        },
+      },
+      {
+        test: /\.(png|jpg|jpeg|svg|webp|)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "images/[name][ext]",
         },
       },
     ],

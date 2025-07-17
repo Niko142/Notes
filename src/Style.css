@@ -16,7 +16,7 @@
 
 @font-face {
   font-family: "Ubuntu";
-  src: url("./fonts/Ubuntu-Regular.woff2") format("woff2");
+  src: url("./assets/fonts/Ubuntu-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -24,7 +24,7 @@
 
 @font-face {
   font-family: "Ubuntu";
-  src: url("./fonts/Ubuntu-Bold.woff2") format("woff2");
+  src: url("./assets/fonts/Ubuntu-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -197,7 +197,7 @@ body {
     margin-bottom: 0;
   }
   &#search-note {
-    background-image: url("../public/loupe.png");
+    background-image: url("./assets/images/loupe.png");
     background-position: 10px 50%;
     background-repeat: no-repeat;
   }
