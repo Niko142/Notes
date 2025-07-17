@@ -25,13 +25,27 @@
   <main class="notes">
     <h1 class="notes__header">Текущие заметки</h1>
     <div class="input__toolbar">
-      <input type="text" class="notes__input" id="add-note" placeholder="Напиши любую заметку" />
+      <input type="text" class="notes__input" id="add-note" placeholder="Напиши заметку" />
       <input type="text" class="notes__input" id="search-note" placeholder="" />
+      <button type="button" class="btn btn--add">Добавить</button>
     </div>
-    <button type="button" class="btn btn--add">Добавить</button>
 
     <!-- Список записей -->
     <ul class="notes__list"></ul>
+
+    <!-- Пагинация -->
+    <menu class="pagination">
+      <button class="pagination__btn pagination__btn--prev" disabled>
+        &lt;
+      </button>
+      <span class="pagination__info">
+        Страница <span class="pagination__current">1</span> из
+        <span class="pagination__total">1</span>
+      </span>
+      <button class="pagination__btn pagination__btn--next" disabled>
+        &gt;
+      </button>
+    </menu>
   </main>
 </body>
 

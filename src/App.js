@@ -1,20 +1,22 @@
 import "./style.css";
+
 import { storage } from "./services/storage";
 import showErrorAlert from "./components/Alert";
 import { clearSearchInput } from "./utils/utils";
 import { eventHandlers } from "./services/eventHandlers";
 import { renderEditNote, renderNotes } from "./services/renderNotes";
+import { paginationService } from "./services/pagination";
 
-let addButton = document.querySelector(".btn.btn--add");
-let recordsList = document.querySelector(".notes__list");
+const addButton = document.querySelector(".btn.btn--add");
+const prevBtn = document.querySelector(".pagination__btn--prev");
+const nextBtn = document.querySelector(".pagination__btn--next");
+const recordsList = document.querySelector(".notes__list");
 const addInput = document.querySelector("#add-note");
 const searchInput = document.querySelector("#search-note");
-let currentRecords = document.getElementsByClassName("notes__item");
-
-// Добавить пагинацию
 
 // Обработчик формирования и обновления списка заметок
-function handleUpdateNotes(filteredData = null) {
+function handleUpdateNotes(filteredData = null, resetPage = false) {
+  if (resetPage) paginationService.resetPage();
   renderNotes(recordsList, searchInput, filteredData);
 }
 
@@ -42,7 +44,7 @@ function handeDeleteNote(id) {
 // Изменение структуры блока записи (появление input для редактирования сообщения)
 function handleOpenEditHTML(id) {
   handleUpdateNotes();
-  renderEditNote(currentRecords, id);
+  renderEditNote(id);
 }
 
 // Редактирование текста в текущей заметке
@@ -54,7 +56,7 @@ async function handleEditNote(id) {
     handleUpdateNotes();
   } else {
     editInput.focus();
-    showErrorAlert(response?.error || 'Ошибка: недопустимый формат записи');
+    showErrorAlert(response?.error || "Ошибка: недопустимый формат записи");
   }
 }
 
@@ -73,10 +75,10 @@ const App = () => {
 
   // Текущий набор обработчиков
   const eventHandlers = {
-    remove: (id) => {
+    delete: (id) => {
       handeDeleteNote(id);
     },
-    update: (id) => {
+    edit: (id) => {
       handleOpenEditHTML(id);
     },
     save: (id) => {
@@ -122,6 +124,20 @@ const App = () => {
   searchInput.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       clearSearchInput(searchInput, handleUpdateNotes);
+    }
+  });
+
+  // Обработчик рендера списка при возврате на предыдущую страницу
+  prevBtn.addEventListener("click", () => {
+    if (paginationService.prevPage()) {
+      handleUpdateNotes();
+    }
+  });
+
+  // Обработчик рендера списка при переключении на следующую страницу
+  nextBtn.addEventListener("click", () => {
+    if (paginationService.nextPage()) {
+      handleUpdateNotes();
     }
   });
 };

@@ -12,6 +12,7 @@
   --gray: #6e6e6e;
   --light-blue: #2361f1;
   --light-blue-hover: #1f55d3;
+  --disabled: #e0e0e0;
 }
 
 @font-face {
@@ -176,6 +177,8 @@ body {
   display: grid;
   gap: 30px;
   grid-template-columns: 3fr 1.5fr;
+  justify-items: baseline;
+  margin-bottom: 30px;
 }
 
 .notes__input {
@@ -185,7 +188,6 @@ body {
   color: var(--black);
   background-color: white;
   border-radius: 6px;
-  margin-bottom: 30px;
   padding: 10px;
 
   &:focus {
@@ -223,6 +225,8 @@ body {
   flex-grow: 1;
   font-size: 1.5rem;
   line-height: 1.25;
+  max-width: 100%;
+  overflow-wrap: break-word;
 }
 
 button[class^="btn"] {
@@ -240,12 +244,11 @@ button[class^="btn"] {
 
 .btn__toolbar {
   display: flex;
-  column-gap: 15px;
+  gap: 5px 15px;
   flex-wrap: wrap;
 }
 
 .btn--add {
-  margin-bottom: 30px;
   padding: 10px 25px;
   background-color: var(--blue);
   &:hover {
@@ -321,12 +324,57 @@ button[class^="btn"] {
   }
 }
 
+/* Стили для пагинации */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 15px;
+  margin-top: 20px;
+  font-size: 1.3rem;
+}
+
+.pagination__btn {
+  box-sizing: border-box;
+  border: 1px solid var(--black);
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: var(--white);
+  background-color: var(--light-blue);
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  &:hover {
+    background-color: var(--light-blue-hover);
+  }
+
+  &:disabled {
+    color: var(--black);
+    background-color: var(--disabled);
+    cursor: not-allowed;
+  }
+}
+
+:where(.pagination__current, .pagination__total) {
+  font-weight: 700;
+}
+
 /*
  * Медиазапросы (добавить + поправить)
 */
 @media screen and (width <= 1024px) {
   html {
     font-size: 15px;
+  }
+
+  .input__toolbar {
+    justify-items: stretch;
+  }
+
+  .btn--add {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
   }
 }
 
@@ -335,10 +383,32 @@ button[class^="btn"] {
     padding: 20px 10px;
     width: 90vw;
   }
+  .input__toolbar {
+    gap: 15px;
+  }
 }
 
 @media screen and (width <= 550px) {
   html {
     font-size: 14px;
+  }
+
+  .input__toolbar, .notes__header {
+    margin-bottom: 12px !important;
+  }
+
+  .notes__item {
+    padding: 8px;
+    gap: 5px;
+  }
+
+  .notes__text {
+    font-size: 1.2rem;
+    line-height: 1.1;
+  }
+
+  .btn:where(.btn--update, .btn--delete, .btn--save, .btn--cancel) {
+    font-size: 1.1rem;
+    padding: 8px;
   }
 }
