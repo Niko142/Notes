@@ -147,7 +147,7 @@ body {
   }
 }
 
-/* Закрытие лоадера */
+/* Закрытие loader-а */
 @keyframes load {
   from {
     transform: rotateY(360deg);
@@ -350,7 +350,7 @@ button[class^="btn"] {
   }
 
   &:disabled {
-    color: var(--black);
+    color: var(--gray);
     background-color: var(--disabled);
     cursor: not-allowed;
   }
@@ -361,7 +361,7 @@ button[class^="btn"] {
 }
 
 /*
- * Медиазапросы (добавить + поправить)
+ * Медиа-запросы (добавить + поправить)
 */
 @media screen and (width <= 1024px) {
   html {
@@ -393,8 +393,17 @@ button[class^="btn"] {
     font-size: 14px;
   }
 
-  .input__toolbar, .notes__header {
+  .input__toolbar,
+  .notes__header {
     margin-bottom: 12px !important;
+  }
+
+  .loader__content {
+    gap: 20px;
+  }
+
+  .loader__points {
+    gap: 10px;
   }
 
   .notes__item {
@@ -410,6 +419,20 @@ button[class^="btn"] {
   .btn:where(.btn--update, .btn--delete, .btn--save, .btn--cancel) {
     font-size: 1.1rem;
     padding: 8px;
+  }
+
+  .notes__input {
+    padding: 7px;
+    font-size: 1rem;
+  }
+
+  .pagination__btn {
+    padding: 3px 5px;
+  }
+
+  .btn.btn--add {
+    font-size: 1rem;
+    padding: 5px;
   }
 }
 
