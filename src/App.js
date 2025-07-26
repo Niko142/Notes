@@ -8,9 +8,8 @@ import { renderEditNote, renderNotes } from "./services/renderNotes";
 import { paginationService } from "./services/pagination";
 
 const addButton = document.querySelector(".btn.btn--add");
-const prevBtn = document.querySelector(".pagination__btn--prev");
-const nextBtn = document.querySelector(".pagination__btn--next");
 const recordsList = document.querySelector(".notes__list");
+const paginationContainer = document.querySelector(".pagination");
 const addInput = document.querySelector("#add-note");
 const searchInput = document.querySelector("#search-note");
 
@@ -36,7 +35,7 @@ async function handleAddNote() {
 }
 
 // Обработчик для удаления записи
-function handeDeleteNote(id) {
+function handleDeleteNote(id) {
   eventHandlers.deleteNote(id);
   handleUpdateNotes();
 }
@@ -45,6 +44,20 @@ function handeDeleteNote(id) {
 function handleOpenEditHTML(id) {
   handleUpdateNotes();
   renderEditNote(id);
+}
+
+// Перейти на следующую страницу
+function handlePrevPage() {
+  if (paginationService.prevPage()) {
+    handleUpdateNotes();
+  }
+}
+
+// Вернуться на предыдущую страницу
+function handleNextPage() {
+  if (paginationService.nextPage()) {
+    handleUpdateNotes();
+  }
 }
 
 // Редактирование текста в текущей заметке
@@ -70,13 +83,10 @@ const App = () => {
   storage.initStorage();
   handleUpdateNotes();
 
-  // Обработчик для добавления новой заметки по клику кнопки
-  addButton.addEventListener("click", handleAddNote);
-
-  // Текущий набор обработчиков
+  // Текущие наборы обработчиков
   const eventHandlers = {
     delete: (id) => {
-      handeDeleteNote(id);
+      handleDeleteNote(id);
     },
     edit: (id) => {
       handleOpenEditHTML(id);
@@ -86,6 +96,13 @@ const App = () => {
     },
     cancel: handleCancelEdit,
   };
+  const paginationHandlers = {
+    prev: handlePrevPage,
+    next: handleNextPage,
+  };
+
+  // Обработчик для добавления новой заметки по клику кнопки
+  addButton.addEventListener("click", handleAddNote);
 
   // Обработчик для кнопок, закрепленных за каждой заметкой
   recordsList.addEventListener("click", (e) => {
@@ -127,18 +144,11 @@ const App = () => {
     }
   });
 
-  // Обработчик рендера списка при возврате на предыдущую страницу
-  prevBtn.addEventListener("click", () => {
-    if (paginationService.prevPage()) {
-      handleUpdateNotes();
-    }
-  });
-
-  // Обработчик рендера списка при переключении на следующую страницу
-  nextBtn.addEventListener("click", () => {
-    if (paginationService.nextPage()) {
-      handleUpdateNotes();
-    }
+  // Обработчики перемещения по страницам в зависимости от типа
+  paginationContainer.addEventListener("click", (e) => {
+    const { type } = e.target.dataset;
+    const handler = paginationHandlers[type];
+    handler && handler();
   });
 };
 

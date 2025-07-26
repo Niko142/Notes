@@ -67,7 +67,7 @@ export const paginationService = {
     };
   },
   // Изменение количества элементов на странице
-  setnotesPerPage(notesPerPage) {
+  setNotesPerPage(notesPerPage) {
     paginationState.notesPerPage = notesPerPage;
     this.updateTotalItems(paginationState.totalItems); // Пересчет страниц
   },

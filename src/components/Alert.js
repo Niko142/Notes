@@ -1,4 +1,4 @@
-// Создание всплывающего алерта при возникновении ошибок
+// Создание всплывающего alert-a при возникновении ошибок
 const showErrorAlert = (message = "Ошибка: недопустимый размер записи") => {
   const alertBlock = document.createElement("div");
   alertBlock.className = "alert";
